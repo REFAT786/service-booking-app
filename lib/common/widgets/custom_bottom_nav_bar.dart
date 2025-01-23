@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
-import 'package:service_booking_app/plus_one/views/auth/login/controller/loginController.dart';
-import '../../plus_one/views/auth/sign_up/controller/sign_up_controller.dart';
-import '../../plus_one/views/chat_screen/screen/chat_screen.dart';
-import '../../plus_one/views/event_screen/screen/event_screen.dart';
-import '../../plus_one/views/explore_screen/screen/explore_screen.dart';
-import '../../plus_one/views/home/screen/home_screen.dart';
-import '../../plus_one/views/plus_one_profile/profile/screen/profile_screen.dart';
-import '../../seekers/views/home/screen/seeker_home_screen.dart';
+import '../../plus_one/features/auth/login/controller/loginController.dart';
+import '../../plus_one/features/auth/sign_up/controller/sign_up_controller.dart';
+import '../../plus_one/features/chat_screen/screen/chat_screen.dart';
+import '../../plus_one/features/event_screen/screen/event_screen.dart';
+import '../../plus_one/features/explore_screen/screen/explore_screen.dart';
+import '../../plus_one/features/home/screen/home_screen.dart';
+import '../../plus_one/features/plus_one_profile/profile/screen/profile_screen.dart';
+import '../../seekers/features/home/screen/seeker_home_screen.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final PersistentTabController _controller = PersistentTabController(initialIndex: 0);

@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:service_booking_app/utils/app_string.dart';
 import 'package:service_booking_app/utils/styles.dart';
-
-import '../../plus_one/views/calender_screen/screen/calender_screen.dart';
-import '../../plus_one/views/event_screen/screen/save_event_screen.dart';
-import '../../plus_one/views/invitation_screen/screen/invitation_screen.dart';
+import '../../plus_one/features/calender_screen/screen/calender_screen.dart';
+import '../../plus_one/features/event_screen/screen/save_event_screen.dart';
+import '../../plus_one/features/invitation_screen/screen/invitation_screen.dart';
 import '../../utils/dimensions.dart';
 import '../../utils/images.dart';
 import 'custom_drawer_list_tile.dart';
