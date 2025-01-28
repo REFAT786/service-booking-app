@@ -20,6 +20,7 @@ import '../../plus_one/features/explore_screen/controller/explore_controller.dar
 import '../../plus_one/features/home/controller/home_controller.dart';
 import '../../plus_one/features/invitation_screen/controller/invitation_controller.dart';
 import '../../plus_one/features/plus_one_profile/companion_profile/controller/seeker_companion_profile_controller.dart';
+import '../../plus_one/features/plus_one_profile/edit_profile/controller/edit_profile_controller.dart';
 import '../../plus_one/features/plus_one_profile/profile/controller/profile_controller.dart';
 import '../../plus_one/features/plus_one_profile/review/controller/review_controller.dart';
 import '../../plus_one/repository/auth_repository.dart';
@@ -40,6 +41,7 @@ class DependencyInjection extends Bindings {
     Get.lazyPut(() => CreateNewPassportController(), fenix: true);
     Get.lazyPut(() => ChooseInterestController(), fenix: true);
     Get.lazyPut(() => FillProfileController(), fenix: true);
+    Get.lazyPut(() => EditProfileController(), fenix: true);
 
     Get.lazyPut(() => HomeController(), fenix: true);
     Get.lazyPut(() => SeekerCompanionProfileController(), fenix: true);

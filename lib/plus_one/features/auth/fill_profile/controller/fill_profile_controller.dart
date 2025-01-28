@@ -4,9 +4,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:service_booking_app/plus_one/features/auth/choose_interest/controller/choose_interest_controller.dart';
 import 'package:service_booking_app/plus_one/features/auth/login/screen/login_screen.dart';
 import 'package:service_booking_app/plus_one/repository/auth_repository.dart';
-import 'package:http/http.dart' as http;
 
 import '../../../../model/user_model.dart';
 
@@ -20,17 +20,18 @@ class FillProfileController extends GetxController {
 
   String? selectedGender;
   File? image;
-  String? filePath = "";
+  File? filePath;
 
   bool isLoading = false;
   UserModel? userModel;
+  static String token = '';
 
   final List<String> genders = ['Male', 'Female', 'Other']; // Dropdown options
 
-
-  final ImagePicker picker = ImagePicker();
+  //final ImagePicker picker = ImagePicker();
 
   Future<void> pickImage(ImageSource source) async {
+    final picker = ImagePicker();
     final XFile? pickedFile = await picker.pickImage(source: source);
 
     if (pickedFile != null) {
@@ -46,7 +47,7 @@ class FillProfileController extends GetxController {
       );
 
       if (result != null && result.files.isNotEmpty) {
-        filePath = result.files.single.path;
+        filePath = File(result.files.single.path!);
         update();
       }
     } catch (e) {
@@ -55,88 +56,51 @@ class FillProfileController extends GetxController {
     }
   }
 
-
   void updateGender(String? gender) {
     selectedGender = gender;
     update();
   }
 
   Future<void> updateUserProfile() async {
-    /*
-    try {
-      final token = Get.arguments?['token'] ?? '';
-      /*
-      final result =
-      */
-      await authRepository.updateUserProfile(
-          {
-            "fullName": nameController.text,
-            "about": bioController.text,
-            "phone": phoneNumberController.text,
-            "gender": selectedGender ?? '',
+    String fullName = nameController.text.trim();
+    String about = bioController.text.trim();
+    String phone = phoneNumberController.text.trim();
 
-          }, token);
-      Get.snackbar('Success', 'Profile updated successfully');
-      LoginScreen();
-    } catch (e) {
-      Get.snackbar('Error', e.toString());
+    if (fullName.isEmpty || about.isEmpty) {
+      Get.snackbar("Error", "Full Name and About are required.");
+      return;
     }
-
-    //image: image!,
-        //document: File(filePath!),
-
-     */
+    isLoading = true;
+    update();
 
     try {
-      final token = Get.arguments?['token'] ?? '';
-
-      if (image == null || filePath == null) {
-        throw Exception("Image and document must be selected.");
-      }
-
-      final imageFile = await http.MultipartFile.fromPath(
-        'image',
-        image!.path,
-      );
-      final documentFile = await http.MultipartFile.fromPath(
-        'document',
-        filePath!,
-      );
-
-      final response  = await authRepository.updateUserProfileWithFiles(
-        fields: {
-          "fullName": nameController.text,
-          "about": bioController.text,
-          "phone": phoneNumberController.text,
-        },
-        files: [imageFile, documentFile],
+      token = ChooseInterestController.token;
+      final response = await authRepository.updateUserProfile(
+        fullName: fullName,
+        about: about,
+        phone: phone,
+        gender: selectedGender ?? '',
+        image: image!,
+        document: filePath!,
         token: token,
       );
-      userModel = response;
-      Get.snackbar('Success', 'Profile updated successfully');
-      update();
-      print("Full Name : ${nameController.text}");
-      print("Bio : ${bioController.text}");
-      print("Phone Number : ${phoneNumberController.text}");
-      print("Gender : $selectedGender");
-      print("Image Path : $imageFile");
-      print("File Path : $documentFile");
-      print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-      print("Updated Profile: $response");
-      LoginScreen();
+      if(response["success"]){
+        Get.snackbar("Success", "Profile updated successfully.");
+        //print("Updated Profile: ${userModel?.toJson()}");
+        Get.offAll(LoginScreen());
+
+      }
+
     } catch (e, s) {
-      Get.snackbar('Error', e.toString());
-      print("Error updating profile with files: $e");
-      print("Error updating profile with files: $s");
-
-      print("Full Name : ${nameController.text}");
-      print("Bio : ${bioController.text}");
-      print("Phone Number : ${phoneNumberController.text}");
-      print("Gender : $selectedGender");
-      print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-
+      Get.snackbar("Error", "An error occurred: $e");
+      print(e);
+      print(s);
+      Get.snackbar("Error", "An error occurred: $s");
     }
-
+    finally {
+      isLoading = false;
+      update();
+    }
   }
 
 

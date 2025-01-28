@@ -61,6 +61,9 @@ class ApiService {
     try {
       final request = http.MultipartRequest('PATCH', url);
       if (token != null) {
+        request.headers['token'] = token;
+      }
+      if (token != null) {
         request.headers['Authorization'] = token;
       }
       request.fields.addAll(fields);

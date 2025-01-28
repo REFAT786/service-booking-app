@@ -1,6 +1,7 @@
 class AppUrl{
 
   static const  baseUrl = "http://10.0.70.112:8010/api/v1";
+  static const  photoUrl = "http://10.0.70.112:8010";
 
   static const createUser = "users/create";
   static const login = "auth/login";

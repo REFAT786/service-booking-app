@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:service_booking_app/utils/app_url.dart';
 import 'package:service_booking_app/utils/images.dart';
 import 'package:service_booking_app/utils/styles.dart';
 
@@ -20,9 +21,8 @@ import '../../screen/privacy_policy_screen.dart';
 import '../../screen/security_screen.dart';
 import '../controller/profile_controller.dart';
 
-
 class ProfileScreen extends StatefulWidget {
-   ProfileScreen({super.key});
+  ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -43,149 +43,203 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   String rightTitle = "";
 
-   File? _image;
-
-   final ImagePicker _picker = ImagePicker();
-
-   Future<void> _pickImage(ImageSource source) async {
-     final XFile? pickedFile = await _picker.pickImage(source: source);
-
-     if (pickedFile != null) {
-       setState(() {
-         _image = File(pickedFile.path);
-       });
-     }
-   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: GetBuilder<ProfileController>(builder: (controller) {
+    return Scaffold(body: GetBuilder<ProfileController>(
+      builder: (controller) {
         return SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: Dimensions.paddingSizeTwenty, vertical: Dimensions.paddingSizeExtremeLarge),
+          padding: const EdgeInsets.symmetric(
+              horizontal: Dimensions.paddingSizeTwenty,
+              vertical: Dimensions.paddingSizeExtremeLarge),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                  AppString.profile,
-                  style: styleExtraBold.copyWith(fontSize: Dimensions.fontSizeOverLarge, color: AppColors.textBlack)
-              ),
+              Text(AppString.profile,
+                  style: styleExtraBold.copyWith(
+                      fontSize: Dimensions.fontSizeOverLarge,
+                      color: AppColors.textBlack)),
               const SizedBox(height: Dimensions.paddingSizeTwenty),
-              Stack(
-                alignment: Alignment.bottomRight,
-                children: [
-                  CircleAvatar(
-                    radius: Dimensions.radiusSixty,
-                    backgroundImage: NetworkImage(profileImage),
-                  ),
-                  GestureDetector(
-                    onTap: (){Get.to(_pickImage(ImageSource.gallery));},
-                    child: Container(
-                      padding: const EdgeInsets.all(Dimensions.paddingSizeSmall),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                      child: const Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                        size: Dimensions.iconSizeSixteen,
-                      ),
-                    ),
-                  ),
-                ],
+              CircleAvatar(
+                radius: Dimensions.radiusSixty,
+                backgroundImage: controller.profileImage.isNotEmpty
+                    ? NetworkImage("${AppUrl.photoUrl}${controller.profileImage}")
+                    : null,
+                child: controller.profileImage.isEmpty
+                    ? Icon(
+                        Icons.person,
+                        size: Dimensions.radiusSixty,
+                        color: AppColors.textBlack,
+                      )
+                    : null,
               ),
               const SizedBox(height: Dimensions.paddingSizeExtraLarge),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(profileName, style: styleExtraBold.copyWith(fontSize: Dimensions.fontSizeTwenty, color: AppColors.textBlack),),
-                  SizedBox(width: Dimensions.paddingSizeExtraSmall,),
-                  Icon(Icons.verified, color: Colors.lightBlue,)
+                  Text(
+                    controller.profileName.isNotEmpty
+                        ? controller.profileName
+                        : "Your Name",
+                    style: styleExtraBold.copyWith(
+                        fontSize: Dimensions.fontSizeTwenty,
+                        color: AppColors.textBlack),
+                  ),
+                  SizedBox(
+                    width: Dimensions.paddingSizeExtraSmall,
+                  ),
+                  Icon(
+                    Icons.verified,
+                    color: Colors.lightBlue,
+                  )
                 ],
               ),
               const SizedBox(height: Dimensions.paddingSizeSmall),
-              Text(mail),
+              Text(controller.profileEmail.isNotEmpty
+                  ? controller.profileEmail
+                  : "your.email@example.com", style: styleNormal.copyWith(color: AppColors.textBlack),),
               const SizedBox(height: Dimensions.paddingSizeSmall),
               ElevatedButton(
                   style: ButtonStyle(
-                      backgroundColor: WidgetStatePropertyAll(AppColors.primary)
-                  ),
-                  onPressed: (){},
-                  child: Text(point, style: styleExtraBold.copyWith(fontSize: Dimensions.fontSizeExtraLarge, color: AppColors.white),)),
+                      backgroundColor:
+                          WidgetStatePropertyAll(AppColors.primary)),
+                  onPressed: () {},
+                  child: Text(
+                    point,
+                    style: styleExtraBold.copyWith(
+                        fontSize: Dimensions.fontSizeExtraLarge,
+                        color: AppColors.white),
+                  )),
               const SizedBox(height: Dimensions.paddingSizeSmall),
               Container(
                 padding: EdgeInsets.all(Dimensions.paddingSizeEighteen),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Dimensions.radiusOverLarge),
-                    color: AppColors.primary
-                ),
+                    borderRadius:
+                        BorderRadius.circular(Dimensions.radiusOverLarge),
+                    color: AppColors.primary),
                 child: ListTile(
-                  leading: Icon(Icons.workspace_premium, color: Colors.deepOrangeAccent,size: Dimensions.iconSizeForty,),
-                  title: Text(AppString.joinPremium, style: styleExtraBold.copyWith(fontSize: 20, color: AppColors.white),),
-                  trailing: Icon(Icons.arrow_forward_ios, color: AppColors.white,size: Dimensions.iconSizeSixteen,),
+                  leading: Icon(
+                    Icons.workspace_premium,
+                    color: Colors.deepOrangeAccent,
+                    size: Dimensions.iconSizeForty,
+                  ),
+                  title: Text(
+                    AppString.joinPremium,
+                    style: styleExtraBold.copyWith(
+                        fontSize: 20, color: AppColors.white),
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColors.white,
+                    size: Dimensions.iconSizeSixteen,
+                  ),
                 ),
               ),
               const SizedBox(height: Dimensions.paddingSizeSmall),
 
               InkWell(
-                  onTap: (){Get.to(EditProfileScreen());},
-                  child: CustomProfileListTile(title: "Edit Profile", icon: Icons.person_outline,rightTitle: rightTitle,)
-              ),
+                  onTap: () {
+                    Get.to(EditProfileScreen());
+                  },
+                  child: CustomProfileListTile(
+                    title: "Edit Profile",
+                    icon: Icons.person_outline,
+                    rightTitle: rightTitle,
+                  )),
               const SizedBox(height: Dimensions.paddingSizeSmall),
               InkWell(
-                  onTap: (){Get.to(NotificationSettingScreen());},
-                  child: CustomProfileListTile(title: "Notification", icon: Icons.notifications,rightTitle: rightTitle,)
-              ),
+                  onTap: () {
+                    Get.to(NotificationSettingScreen());
+                  },
+                  child: CustomProfileListTile(
+                    title: "Notification",
+                    icon: Icons.notifications,
+                    rightTitle: rightTitle,
+                  )),
               const SizedBox(height: Dimensions.paddingSizeSmall),
               InkWell(
-                  onTap: (){Get.to(ChangePasswordScreen());},
-                  child: CustomProfileListTile(title: "Change Password", icon: Icons.lock,rightTitle: rightTitle,)
-              ),
+                  onTap: () {
+                    Get.to(ChangePasswordScreen());
+                  },
+                  child: CustomProfileListTile(
+                    title: "Change Password",
+                    icon: Icons.lock,
+                    rightTitle: rightTitle,
+                  )),
               const SizedBox(height: Dimensions.paddingSizeSmall),
               InkWell(
-                  onTap: (){Get.to(SecurityScreen());},
-                  child: CustomProfileListTile(title: "Security", icon: Icons.security,rightTitle: rightTitle,)
-              ),
+                  onTap: () {
+                    Get.to(SecurityScreen());
+                  },
+                  child: CustomProfileListTile(
+                    title: "Security",
+                    icon: Icons.security,
+                    rightTitle: rightTitle,
+                  )),
               const SizedBox(height: Dimensions.paddingSizeSmall),
               InkWell(
-                  onTap: (){Get.to(LanguageScreen());},
-                  child: CustomProfileListTile(title: "Language", icon: Icons.language,rightTitle: "English US",)
-              ),
+                  onTap: () {
+                    Get.to(LanguageScreen());
+                  },
+                  child: CustomProfileListTile(
+                    title: "Language",
+                    icon: Icons.language,
+                    rightTitle: "English US",
+                  )),
               const SizedBox(height: Dimensions.paddingSizeSmall),
               InkWell(
-                  onTap: (){Get.to(HelpCenterScreen());},
-                  child: CustomProfileListTile(title: "Help Center", icon: Icons.help,rightTitle: rightTitle,)
-              ),
+                  onTap: () {
+                    Get.to(HelpCenterScreen());
+                  },
+                  child: CustomProfileListTile(
+                    title: "Help Center",
+                    icon: Icons.help,
+                    rightTitle: rightTitle,
+                  )),
               const SizedBox(height: Dimensions.paddingSizeSmall),
               InkWell(
-                  onTap: (){Get.to(PrivacyPolicyScreen());},
-                  child: CustomProfileListTile(title: "Privacy Policy", icon: Icons.policy,rightTitle: rightTitle,)
-              ),
+                  onTap: () {
+                    Get.to(PrivacyPolicyScreen());
+                  },
+                  child: CustomProfileListTile(
+                    title: "Privacy Policy",
+                    icon: Icons.policy,
+                    rightTitle: rightTitle,
+                  )),
               const SizedBox(height: Dimensions.paddingSizeSmall),
               InkWell(
-                  onTap: (){Get.to(ReviewScreen());},
-                  child: CustomProfileListTile(title: "My Review", icon: Icons.reviews,rightTitle: rightTitle,)
-              ),
+                  onTap: () {
+                    Get.to(ReviewScreen());
+                  },
+                  child: CustomProfileListTile(
+                    title: "My Review",
+                    icon: Icons.reviews,
+                    rightTitle: rightTitle,
+                  )),
               const SizedBox(height: Dimensions.paddingSizeSmall),
 
               InkWell(
-                onTap: (){
+                onTap: () {
                   controller.logout(); // Call the logout function
                 },
                 child: ListTile(
-                  leading: Icon(Icons.logout, color: AppColors.red,),
-                  title: Text(AppString.logout, style: styleBold.copyWith(fontSize: Dimensions.fontSizeTwenty, color: AppColors.red),),
-
+                  leading: Icon(
+                    Icons.logout,
+                    color: AppColors.red,
+                  ),
+                  title: Text(
+                    AppString.logout,
+                    style: styleBold.copyWith(
+                        fontSize: Dimensions.fontSizeTwenty,
+                        color: AppColors.red),
+                  ),
                 ),
               )
-
 
               // Additional fields can go here.
             ],
           ),
         );
-      },)
-    );
+      },
+    ));
   }
 }

@@ -4,27 +4,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefsHelper extends GetxController {
   static String token = "";
-  static String tempToken = "";
+  //static String tempToken = "";
   static bool isLogIn = false;
-  static bool isNotifications = true;
-  static String refreshToken = "";
-  static String userId = "";
-  static String myImage = "";
-  static String myName = "";
-  static String myEmail = "";
-  static String myRole = "";
-  static String accountStatus = "";
-  static String purchesPackageId = "";
-  static bool isPurchesPackage = false;
+  //static bool isNotifications = true;
+  //static String refreshToken = "";
+  //static String userId = "";
+  //static String myImage = "";
+  //static String myName = "";
+  //static String myEmail = "";
+  //static String myRole = "";
+  //static String accountStatus = "";
+  //static String purchesPackageId = "";
+  //static bool isPurchesPackage = false;
 
-  static String mySubscription = "shopping";
-  static String localizationLanguageCode = 'en';
-  static String localizationCountryCode = 'US';
-  static bool isMerchant = false;
-  static bool isAutoPayRent = false;
+  //static String mySubscription = "shopping";
+  //static String localizationLanguageCode = 'en';
+  //static String localizationCountryCode = 'US';
+  //static bool isMerchant = false;
+  //static bool isAutoPayRent = false;
 
   ///<<<======================== Get All Data Form Shared Preference ==============>
-
+/*
   static Future<void> getAllPrefData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     token = preferences.getString("token") ?? "";
@@ -55,7 +55,10 @@ class PrefsHelper extends GetxController {
     }
   }
 
+ */
+
   ///<<<======================== Get All Data Form Shared Preference ============>
+  /*
   static Future<void> removeAllPrefData() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.clear();
@@ -73,6 +76,8 @@ class PrefsHelper extends GetxController {
     getAllPrefData();
   }
 
+   */
+
   ///<<<======================== Get Data Form Shared Preference ==============>
 
   static Future<String> getString(String key) async {
@@ -82,7 +87,7 @@ class PrefsHelper extends GetxController {
 
   static Future<bool?> getBool(String key) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return preferences.getBool(key);
+    return preferences.getBool(key) ?? false;
   }
 
   static Future<int> getInt(String key) async {
@@ -113,4 +118,11 @@ class PrefsHelper extends GetxController {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     return preferences.remove(key);
   }
+
+  // Clear all data from SharedPreferences
+  static Future<void> clear() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+  }
+
 }

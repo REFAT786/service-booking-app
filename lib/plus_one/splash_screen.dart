@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import '../helper/prefs_helper.dart';
 import '../utils/app_string.dart';
+import '../utils/images.dart';
 import '../utils/styles.dart';
 import 'features/intro/screen/intro_screen.dart';
 import 'features/nav_bar_screen/nav_bar_screen.dart';
@@ -38,12 +40,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
         body: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
-          child: Text(AppString.logoText, style: styleExtraBold),
+          child: Image.asset(Images.appIcon, height: 150, width: 150,)
         ),
       ],
     ));

@@ -9,7 +9,6 @@ import 'package:service_booking_app/utils/dimensions.dart';
 import 'package:service_booking_app/utils/styles.dart';
 import '../../../../../../common/widgets/custom_button.dart';
 import '../../../../../../utils/app_color.dart';
-import '../../../../../../utils/images.dart';
 import '../controller/fill_profile_controller.dart';
 
 class FillProfileScreen extends StatefulWidget {
@@ -208,6 +207,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                     controller.updateUserProfile();
                   },
                   child: CustomButton(
+                    isLoading: controller.isLoading,
                     buttonText: AppString.continueText,
                   ),
                 ),

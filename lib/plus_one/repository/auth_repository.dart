@@ -51,48 +51,35 @@ class AuthRepository {
     return _apiService.patch(AppUrl.updateUserProfile, {"interests": interests}, token: token,);
   }
 
-  // Update user profile (non-file fields)
-  Future<Map<String, dynamic>> updateUserProfile(Map<String, dynamic> profileData, String token) {
-    return _apiService.patch("users/update-my-profile", profileData, token: token);
-  }
 
-  /*
-  // Update user profile (with files)
-  Future<Map<String, dynamic>> updateUserProfileWithFiles({
-    required Map<String, String> fields,
-    required List<http.MultipartFile> files,
-    required String token,
-  }) {
-    return _apiService.multipartPatch(
-      AppUrl.updateUserProfile,
-      fields: fields,
-      files: files,
-      token: token,
-    );
-  }
-
-   */
-
-  Future<UserModel> updateUserProfileWithFiles({
-    required Map<String, String> fields,
-    required List<http.MultipartFile> files,
+  Future<Map<String, dynamic>> updateUserProfile({
+    required String fullName,
+    required String about,
+    required String phone,
+    required String gender,
+    required File image,
+    required File document,
     required String token,
   }) async {
-    final response = await _apiService.multipartPatch(
+
+    // Add fields
+    final fields = {
+      "fullName": fullName,
+      "about": about,
+      "phone": phone,
+      "gender": gender,
+    };
+
+    final imageFile = await http.MultipartFile.fromPath('image', image.path);
+    final documentFile = await http.MultipartFile.fromPath('document', document.path);
+
+    return await _apiService.multipartPatch(
       AppUrl.updateUserProfile,
       fields: fields,
-      files: files,
+      files: [imageFile, documentFile],
       token: token,
     );
-    return UserModel.fromJson(response['data']);
   }
-
-  /*
-  // Fetch user profile
-  Future<Map<String, dynamic>> getUserProfile(String token) {
-    return _apiService.get(AppUrl.getUserProfileInfo, token: token);
-  }
-   */
 
   Future<UserModel> getUserProfile(String token) async {
     final response = await _apiService.get(AppUrl.getUserProfileInfo, token: token);

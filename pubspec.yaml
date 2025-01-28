@@ -48,6 +48,7 @@ dependencies:
   shared_preferences: ^2.3.5
   flutter_otp_text_field: ^1.4.0+2
   http: ^1.2.2
+  cached_network_image: ^3.4.1
 
 
 
@@ -77,6 +78,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

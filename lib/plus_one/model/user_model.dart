@@ -1,39 +1,49 @@
+import 'dart:io';
+
 class UserModel {
   final String id;
   final String fullName;
-  final String about;
+  final String? about;
   final String phone;
-  final String imageUrl;
-  final String documentUrl;
+  final String gender;
+  final String image;
+  final String document;
 
   UserModel({
     required this.id,
     required this.fullName,
-    required this.about,
+    this.about,
     required this.phone,
-    required this.imageUrl,
-    required this.documentUrl,
+    required this.gender,
+    required this.image,
+    required this.document,
   });
 
+  // Factory constructor to parse JSON into a ProfileModel
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['_id'],
       fullName: json['fullName'],
       about: json['about'],
       phone: json['phone'],
-      imageUrl: json['image'],
-      documentUrl: json['document'],
+      gender: json['gender'],
+      image: json['image'],
+      document: json['document'],
     );
   }
 
+  // Convert the ProfileModel into a JSON map
   Map<String, dynamic> toJson() {
     return {
       '_id': id,
       'fullName': fullName,
       'about': about,
       'phone': phone,
-      'image': imageUrl,
-      'document': documentUrl,
+      'gender': gender,
+      'image': image,
+      'document': document,
     };
   }
+
+
 }

@@ -12,16 +12,12 @@ import '../../seekers/features/home/screen/seeker_home_screen.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final PersistentTabController _controller = PersistentTabController(initialIndex: 0);
-  final SignUpController signUpController = Get.find<SignUpController>();
-
 
   CustomBottomNavBar({Key? key}) : super(key: key);
 
-  List<Widget> _buildScreens() {
+  List<Widget> _buildScreens(String role) {
     return [
-      Obx(() => LoginController.role.value == "seeker"
-          ?  SeekerHomeScreen()
-          :  HomeScreen()),
+      role == "seeker" ?  SeekerHomeScreen() :  HomeScreen(),
        ExploreScreen(),
        EventScreen(),
        ChatScreen(),
@@ -66,12 +62,14 @@ class CustomBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      context,
-      controller: _controller,
-      screens: _buildScreens(),
-      items: _navBarsItems(),
-      navBarStyle: NavBarStyle.style3, // Style 3
-    );
+    return GetBuilder<LoginController>(builder: (controller) {
+      return PersistentTabView(
+        context,
+        controller: _controller,
+        screens: _buildScreens(controller.role),
+        items: _navBarsItems(),
+        navBarStyle: NavBarStyle.style3, // Style 3
+      );;
+    },);
   }
 }

@@ -15,6 +15,7 @@ class ChooseInterestController extends GetxController {
   ].obs;
 
   final isLoading = false.obs;
+  static String token = '';
 
   void addInterest(String newInterest) {
     if (newInterest.trim().isEmpty) {
@@ -51,9 +52,10 @@ class ChooseInterestController extends GetxController {
     isLoading.value = true;
 
     try {
-      final token = Get.arguments?['token'] ?? '';
+
       await authRepository.updateUserInterests(selectedInterests, token);
       Get.snackbar("Success", "Interests updated successfully.");
+      print("token: $token");
       Get.off(FillProfileScreen());
     } catch (e) {
       Get.snackbar("Error", "Failed to update interests: $e");
@@ -61,6 +63,12 @@ class ChooseInterestController extends GetxController {
       isLoading.value = false;
     }
 
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    token = Get.arguments?['token'] ?? '';
   }
 
   @override
